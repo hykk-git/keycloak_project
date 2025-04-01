@@ -7,3 +7,4 @@ google-auth
 cryptography
 django-environ
 google-api-python-client
+dotenv
