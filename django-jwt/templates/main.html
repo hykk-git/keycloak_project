@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>메인 페이지</title>
+</head>
+<body>
+    <h2>메인 페이지</h2>
+
+    <!-- 로그인 여부 확인 -->
+    <div id="auth-button">
+        <!-- 로그인 상태에 따라 버튼 표시 -->
+        <a href="/google/login"><button id="google-login-btn">Google로 로그인</button></a>
+        <button id="logout-btn" onclick="logout()">로그아웃</button>
+    </div>
+
+    <!-- 게시판으로 이동 버튼 -->
+    <div>
+        <a href="/board"><button id="board-btn">게시판</button></a>
+    </div>
+
+    <script>        
+        // 서버에 로그인 상태 확인 요청
+        function checkLoginStatus() {
+            fetch("/login/status/", {
+                method: "GET",
+                credentials: "include"  // 쿠키 포함해서 전송
+            })
+            .then(response => response.json())
+            .then(data => {
+                // login
+                if (data.login) {
+                    document.getElementById("google-login-btn").style.display = "none";
+                    document.getElementById("logout-btn").style.display = "inline-block";
+                } else {
+                    document.getElementById("google-login-btn").style.display = "inline-block";
+                    document.getElementById("logout-btn").style.display = "none";
+                }
+            })
+            .catch(error => {
+                console.error("Error checking login status:", error);
+            });
+            }   
+            
+        // 페이지 로드 시 로그인 상태 확인
+        window.onload = function() {
+            checkLoginStatus();
+        }
+
+        // 로그아웃시 저장된 쿠키 삭제 요청
+        function logout() {
+            fetch("/logout/", {
+                method: "POST",
+                credentials: "include"  // 쿠키 포함해서 전송
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 200) {
+                    alert(data.message);
+                    location.reload();  // 페이지 새로고침 후 로그인 상태 반영
+                } else {
+                    alert("로그아웃 실패: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Logout Error:", error);
+            });
+        }
+
+        async function refreshToken() {
+            try {
+                const response = await fetch('/refresh-token/', {
+                    method: 'GET',
+                    credentials: 'include'  // 쿠키 포함해서 전송
+                });
+                const data = await response.json();
+            } catch (error) {
+                console.error("갱신 요청 중 오류 발생:", error);
+            }
+        }
+        // 1시간마다 토큰 갱신
+        setInterval(refreshToken, 3600 * 1000);
+</script>
+</body>
+</html>

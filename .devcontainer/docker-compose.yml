@@ -1,0 +1,13 @@
+# 개발 환경에서 덮어씌울 compose file
+version: "3.8"
+
+services:
+  django:
+    build:
+      context: ../root_pj
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - keycloak
+    command: ["sleep", "infinity"]
