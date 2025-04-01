@@ -8,4 +8,5 @@ urlpatterns = [
     path("logout/", logout_view, name="logout"),
     path('board/', board_view, name='board'),
     path("login/oauth2/google/", google_callback, name="google_callback"),
+    path("login/keycloak/callback/", keycloak_callback, name="keycloak_callback"),
 ]
