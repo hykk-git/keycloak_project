@@ -4,8 +4,7 @@ import os
 import requests
 
 from django.shortcuts import redirect, render
-from django.http import JsonResponse, HttpResponseRedirect
-from rest_framework_simplejwt.tokens import RefreshToken
+from django.http import JsonResponse
 
 from rest_framework.decorators import api_view
 

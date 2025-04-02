@@ -4,10 +4,12 @@ version: "3.8"
 services:
   django:
     build:
-      context: ../root_pj
+      context: ../keycloak_project
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     depends_on:
       - keycloak
+    networks:
+      - app-net
     command: ["sleep", "infinity"]
