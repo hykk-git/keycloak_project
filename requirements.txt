@@ -1,10 +1,8 @@
 django
 djangorestframework
 djangorestframework-simplejwt
-django-allauth
 requests
-google-auth
 cryptography
 django-environ
-google-api-python-client
 dotenv
+mozilla-django-oidc
