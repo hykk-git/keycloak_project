@@ -1,12 +1,8 @@
 from pathlib import Path
 
 import os
-import requests
 
-from django.shortcuts import redirect, render
-from django.http import JsonResponse
-
-from rest_framework.decorators import api_view
+from django.shortcuts import render
 
 from .models import *
 
@@ -39,24 +35,6 @@ OIDC_OP_JWKS_ENDPOINT = f"{KEYCLOAK_INTERNAL_DOMAIN}/protocol/openid-connect/cer
 # 메인화면
 def main_view(request):
     return render(request, 'main.html')
-
-# httponly, secure = True로 token을 쿠키에 저장하는 함수
-def set_cookies(response, access_token, refresh_token):
-    response.set_cookie(
-        key="access_token",
-        value=access_token,
-        httponly=True,
-        secure=False, # 개발시에만 False
-        samesite="None"
-    )
-    response.set_cookie(
-        key="refresh_token",
-        value=refresh_token,
-        httponly=True,
-        secure=False, 
-        samesite="None"
-    )
-    return response
 
 def board_view(request):
     posts = Post.objects.all()

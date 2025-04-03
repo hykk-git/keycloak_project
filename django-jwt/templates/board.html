@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>게시판</title>
+    <!--인증되지 않은 사용자면 main으로 이동-->
     {% if not user.is_authenticated %}
     <script>
         alert("로그인하세요");
@@ -11,6 +12,7 @@
     {% endif %}
 </head>
 <body>
+    <!--인증된 사용자에게 열람 허용-->
     {% if user.is_authenticated %}
         <h2>게시판입니다.</h2>
     {% endif %}
