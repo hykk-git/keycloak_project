@@ -58,37 +58,6 @@ def set_cookies(response, access_token, refresh_token):
     )
     return response
 
-# 쿠키를 확인해서 로그인 여부를 Boolean 타입으로 'login'으로 반환하는 함수
-@api_view(['GET'])
-def login_status(request):
-    access_token = request.COOKIES.get('access_token')
-    if access_token:
-        return JsonResponse({"login": True, "message": "로그인 상태"})
-    else:
-        return JsonResponse({"login": False, "message": "로그아웃 상태"})
-
-# 요청을 받고 브라우저 쿠키를 비활성화시키는 로그아웃 함수
-@api_view(['POST'])
-def logout_view(request):
-    response = JsonResponse({"status": 200, "message": "로그아웃 되었습니다."})
-    
-    # 쿠키 삭제 (쿠키 유효기간 과거로 설정)
-    response.delete_cookie('access_token')
-    response.delete_cookie('refresh_token')
-    return response
-
-# 쿠키 여부를 확인하고 인가된 사용자만 보여 주는 게시판 화면
-@api_view(['GET'])
 def board_view(request):
-    # 쿠키에서 access token 받아옴
-    access_token = request.COOKIES.get("access_token")
-    
-    # access token 존재시 접근 허용
-    if access_token:
-        posts = Post.objects.all()
-        return render(request, 'board.html', {'posts': posts})
-    else:
-        return JsonResponse({"message": "로그인이 필요합니다."}, status=401)
-    
-def keycloak_callback(request):
-    pass
+    posts = Post.objects.all()
+    return render(request, 'board.html', {'posts': posts})
