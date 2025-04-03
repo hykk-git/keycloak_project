@@ -46,7 +46,7 @@ def set_cookies(response, access_token, refresh_token):
         key="access_token",
         value=access_token,
         httponly=True,
-        secure=False,  # 개발시에만 False
+        secure=False, # 개발시에만 False
         samesite="None"
     )
     response.set_cookie(
