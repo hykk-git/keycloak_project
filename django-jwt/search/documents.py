@@ -21,11 +21,11 @@ post_index.settings(
 @registry.register_document
 class PostDocument(Document):
     # keyword 필드만 색인
-    keyword = fields.TextField(analyzer='korean')  
+    keyword = fields.TextField()  
 
     class Index:
         name = 'posts'
 
     class Django:
         model = Post
-        fields = ['keyword'] 
+        fields = ['id']
