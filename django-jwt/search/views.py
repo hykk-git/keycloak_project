@@ -1,3 +1,4 @@
+# search/views.py
 from django.shortcuts import render
 from search.documents import PostDocument
 
@@ -7,9 +8,7 @@ def search_posts(request):
 
     if query:
         results = PostDocument.search().query(
-            "multi_match",
-            query=query,
-            fields=['title', 'content']
+            "match", keyword=query
         )
 
     return render(request, 'search/results.html', {'results': results, 'query': query})

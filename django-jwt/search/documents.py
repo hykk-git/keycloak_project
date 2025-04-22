@@ -28,4 +28,4 @@ class PostDocument(Document):
 
     class Django:
         model = Post
-        fields = ['id'] 
+        fields = ['keyword'] 

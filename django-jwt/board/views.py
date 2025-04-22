@@ -2,9 +2,11 @@ from pathlib import Path
 
 import os
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .models import *
+from .forms import PostForm
+from search.documents import PostDocument  # Elasticsearch 색인 정보
 
 # .env 파일을 읽어서 현재 환경 변수로 로드하는 패키지
 from dotenv import load_dotenv
@@ -36,8 +38,40 @@ OIDC_OP_JWKS_ENDPOINT = f"{KEYCLOAK_INTERNAL_DOMAIN}/protocol/openid-connect/cer
 def main_view(request):
     return render(request, 'main.html')
 
+# 게시판
 def board_view(request):
+    query = request.GET.get('q', '')
     # 모든 게시글 가져옴
-    posts = Post.objects.all()
-    
-    return render(request, 'board.html', {'posts': posts})
+    posts = Post.objects.all().order_by('-created_at')
+
+    search_results = []
+    if query:
+        search_result = PostDocument.search().query("match", keyword=query)
+        post_ids = [int(hit.meta.id) for hit in search_result]
+        search_results = Post.objects.filter(id__in=post_ids).order_by('-created_at')
+
+    return render(request, 'board.html', {
+        'posts': posts,
+        'search_results': search_results,
+        'query': query,
+    })
+
+# 게시글 작성 페이지
+def post_create_view(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+
+            # 로그인된 사용자만 작성 가능
+            post.author = request.user  
+            post.save()
+
+            # 글 작성 후 목록으로 이동
+            return redirect('board:board_view')  
+    else:
+        # 글 양식이 뭔가 빠졌거나 재작성 필요
+        form = PostForm()
+
+    return render(request, 'board/post_form.html', {'form': form})
+
