@@ -37,5 +37,7 @@ def main_view(request):
     return render(request, 'main.html')
 
 def board_view(request):
+    # 모든 게시글 가져옴
     posts = Post.objects.all()
+    
     return render(request, 'board.html', {'posts': posts})

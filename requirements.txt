@@ -6,3 +6,4 @@ cryptography
 django-environ
 dotenv
 mozilla-django-oidc
+django-elasticsearch-dsl
