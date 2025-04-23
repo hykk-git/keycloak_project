@@ -68,10 +68,10 @@ def post_create_view(request):
             post.save()
 
             # 글 작성 후 목록으로 이동
-            return redirect('board:board_view')  
+            return redirect('board:board')
     else:
         # 글 양식이 뭔가 빠졌거나 재작성 필요
         form = PostForm()
 
-    return render(request, 'board/post_form.html', {'form': form})
+    return render(request, 'post.html', {'form': form})
 
