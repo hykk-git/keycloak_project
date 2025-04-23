@@ -9,14 +9,18 @@ post_index.settings(
     number_of_shards=1,
     number_of_replicas=0,
     analysis={
+        'tokenizer': {
+            'nori_custom_tokenizer': {
+                'type': 'nori_tokenizer',
+                'decompound_mode': 'mixed' 
+            }
+        },
         'analyzer': {
-            'korean': {
+            'korean': {  
                 'type': 'custom',
-                'tokenizer': 'nori_tokenizer',
-                "filter": [
-                    "lowercase",
-                    "nori_readingform",
-                    "nori_part_of_speech"
+                'tokenizer': 'nori_custom_tokenizer',
+                'filter': [
+                    'lowercase',
                 ]
             }
         }
