@@ -84,7 +84,7 @@ def post_create_view(request):
 
 # 게시글 내용 열람 기능
 def post_detail_view(request, pk):
-    # 작성자 구분용 pk 받아옴
+    # 게시글 구분용 pk
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'post_detail.html', {'post': post})
 
