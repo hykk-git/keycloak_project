@@ -9,6 +9,8 @@
     <p><strong>작성자:</strong> {{ post.author.email|default:"알 수 없음" }}</p>
 
     <p><strong>작성일:</strong> {{ post.created_at }}</p>
+
+    <p><strong>키워드:</strong> {{ post.keyword }}</p>
     <hr>
     <p>{{ post.content }}</p>
 
