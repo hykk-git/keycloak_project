@@ -38,8 +38,7 @@
         <h3>전체 게시글</h3>
         {% for post in posts %}
             <div>
-                <strong>{{ post.title }}</strong><br>
-                키워드: {{ post.keyword }}<br>
+                <a href="{% url 'board:post_detail' pk=post.pk %}">{{ post.title }}</a><br>
                 작성일: {{ post.created_at }}<br>
             </div>
             <hr>

@@ -1,4 +1,3 @@
-# search/documents.py
 from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl.registries import registry
 from board.models import Post

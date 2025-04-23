@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from .forms import PostForm
 from search.documents import PostDocument  # Elasticsearch 색인 정보
+from django.shortcuts import get_object_or_404
 
 # .env 파일을 읽어서 현재 환경 변수로 로드하는 패키지
 from dotenv import load_dotenv
@@ -64,7 +65,7 @@ def post_create_view(request):
             post = form.save(commit=False)
 
             # 로그인된 사용자만 작성 가능
-            post.author = request.user  
+            post.author = request.user
             post.save()
 
             # 글 작성 후 목록으로 이동
@@ -75,3 +76,16 @@ def post_create_view(request):
 
     return render(request, 'post.html', {'form': form})
 
+def post_detail_view(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, 'post_detail.html', {'post': post})
+
+def post_delete_view(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    # 삭제 권한 확인
+    if request.user != post.author:
+        return redirect('board:post_detail', pk=pk)
+
+    post.delete()
+    return redirect('board:board')
