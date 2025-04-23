@@ -49,7 +49,7 @@ def board_view(request):
     if query:
         # PostDocument에서 키워드 검색
         search_result = PostDocument.search().query("match", keyword=query)
-        
+
         # 일치하는 페이지 id 저장
         post_ids = [int(hit.meta.id) for hit in search_result]
         
@@ -82,11 +82,13 @@ def post_create_view(request):
 
     return render(request, 'post.html', {'form': form})
 
+# 게시글 내용 열람 기능
 def post_detail_view(request, pk):
     # 작성자 구분용 pk 받아옴
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'post_detail.html', {'post': post})
 
+# 본인 게시글 삭제 기능
 def post_delete_view(request, pk):
     post = get_object_or_404(Post, pk=pk)
 
