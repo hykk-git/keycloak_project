@@ -50,7 +50,7 @@ def board_view(request):
         # PostDocument에서 키워드 검색
         search_result = PostDocument.search().query("match", keyword=query)
 
-        # 키워드를 포함하는ㄴ 게시글 id 저장
+        # 키워드를 포함하는 게시글 id 저장
         post_ids = [int(hit.meta.id) for hit in search_result]
         
         # 검색 페이지 리턴
